@@ -5,18 +5,21 @@ import express, {
   NextFunction,
   Router,
 } from 'express';
+// require('dotenv').config();
 import cors from 'cors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-// import githubRouter from './routes/githubRouter';
-
+import githubRouter from './routes/githubRouter.js';
 
 const router: Router = express.Router();
 const app: Application = express();
 const PORT: number = 8080;
+
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
+
+app.use('/github', githubRouter)
 
 //Define the error object type to use
 type ServerError = {
@@ -49,7 +52,6 @@ app.use(
   }
 );
 
-// app.use('/github', githubRouter)
 
 //listening to server connection
 app.listen(PORT, () => console.log(`Server is connected on ${PORT}`));
