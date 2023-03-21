@@ -67,7 +67,7 @@ h1 {
 }
 #splash-logo{
   width: 250px;
-  margin-top: -50px;
+  margin-top: -30px;
 }
 
 @media (prefers-color-scheme: light) {
