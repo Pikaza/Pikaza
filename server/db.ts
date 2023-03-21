@@ -26,10 +26,10 @@ const db: any = {
 interface QuestionsAttributes {
   _id: number;
   question_body: string;
-  frequency: string;
-  company: string;
-  role: string;
-  tags: string;
+  frequency: number;
+  company: string[];
+  role: string[];
+  tags: string[];
 }
 
 const questions = db.sequelize.define('questions', {
@@ -49,7 +49,7 @@ const questions = db.sequelize.define('questions', {
     type: DataTypes.INTEGER,
     allowNull: false,
     unique: false,
-    defaultValue:1
+    defaultValue: 1,
   },
   company: {
     type: DataTypes.ARRAY(DataTypes.STRING),
@@ -60,11 +60,25 @@ const questions = db.sequelize.define('questions', {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false,
     unique: false,
+    validate: {
+      isSpecificLength(value: []) {
+        if (value.length > 3) {
+          throw new Error('industryOfFocus must only have three items');
+        }
+      },
+    },
   },
   tags: {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false,
     unique: false,
+    validate: {
+      isSpecificLength(value: []) {
+        if (value.length > 5) {
+          throw new Error('industryOfFocus must only have three items');
+        }
+      },
+    },
   },
 });
 

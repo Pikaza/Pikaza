@@ -1,5 +1,5 @@
 // import types for req, res, next
-import express, { Application, Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 // const app: Application = express();
 // import db with all dbs
 import { db } from '../db.js';
@@ -22,10 +22,12 @@ questionsController.getQuestions = async (
     res.locals.questions = allQuestions;
     return next();
   } catch (err) {
-    console.log(err);
+    console.log('Error in getQuestions middleware', err);
     next({ err });
   }
 };
+
+// controller for creating questions
 questionsController.createQuestions = async (
   req: Request,
   res: Response,
@@ -39,11 +41,11 @@ questionsController.createQuestions = async (
     res.locals.question = newQuestion;
     return next();
   } catch (err) {
-    console.log(err);
+    console.log('Error in createQuestions middleware', err);
     next({ err });
   }
 };
-// // catch all
-// app.use((req: Request, res: Response): Response => res.sendStatus(404));
+
+
 
 export default questionsController;
