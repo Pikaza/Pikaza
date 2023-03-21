@@ -1,13 +1,6 @@
 import express, { Router } from 'express';
 const githubRouter: Router = express.Router();
-// import githubController from '../controllers/githubController.js';
 import oAuthController from '../controllers/oAuthController.js';
-
-// import dotenv from 'dotenv';
-// dotenv.config();
-
-const clientId = process.env.CLIENT_ID
-const clientSecret = process.env.CLIENT_SECRET
 
 githubRouter.get(
   '/connect',
@@ -32,6 +25,7 @@ githubRouter.get(
     // console.log('after requestGitHUbIdentity & query w/ access token'),
     //   console.log('res.locals.access_token', res.locals.access_token),
     //   console.log('final redirect to homepage');
+    console.log('Oauth successful')
     res.redirect('http://localhost:5173/');
     // res.status(200).json(res.locals.user)
   }

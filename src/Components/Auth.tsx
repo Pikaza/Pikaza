@@ -11,10 +11,7 @@ const Auth = ( props: any ) => {
         redirect: 'follow'
       });
       const data = await response.json();
-      // console.log('data', data)
-      // window.location.href=(data);
-      window.open(data);
-
+      window.location.href=(data);
     } 
     catch (error) {
       console.log(error, 'auth.tsx');

@@ -5,7 +5,6 @@ import express, {
   NextFunction,
   Router,
 } from 'express';
-// require('dotenv').config();
 import cors from 'cors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
@@ -19,12 +18,11 @@ const app: Application = express();
 const PORT: number = 8080;
 
 app.use(express.json());
-app.use(cors({ origin: true, credentials: true }{ origin: true, credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 
 app.use('/github', githubRouter)
 
-app.use('/github', githubRouter)
 
 app.get(
   '/',
@@ -47,6 +45,7 @@ app.patch(
     res.status(200).send(res.locals.question);
   }
 );
+
 //Define the error object type to use
 type ServerError = {
   log: string;

@@ -6,25 +6,10 @@ let clientId = process.env.CLIENT_ID
 const clientSecret = process.env.CLIENT_SECRET
 const redirectUri = process.env.GITHUB_REDIRECT_URI;
 
-// clientId = clientId?.toString();
-// let newStr = redirectUri.toString();
 
 interface GitHubData {
   login: string;
   id: number;
-}
-
-interface ProcessedGitHubData {
-  username: string;
-  id: number;
-}
-
-function processGitHubData(data: GitHubData): ProcessedGitHubData {
-  const { login, id } = data;
-  return {
-    username: login,
-    id: id
-  };
 }
 
 
@@ -102,10 +87,6 @@ const oAuthController: oAuthController= {
       const data = await response.json();
       const { login, id } = data
       res.locals.user = { username: login, id: id}
-      // res.locals = {
-      //   ...res.locals,
-      //   ...processGitHubData(data)
-      // }
       console.log('access token?', res.locals.user)
       return next()
     }
