@@ -9,18 +9,44 @@ import express, {
 import cors from 'cors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+// import test from './test';
 import githubRouter from './routes/githubRouter.js';
+import questionsController from './controllers/questionsController.js';
+// test();
 
 const router: Router = express.Router();
 const app: Application = express();
 const PORT: number = 8080;
 
 app.use(express.json());
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: true, credentials: true }{ origin: true, credentials: true }));
 app.use(cookieParser());
 
 app.use('/github', githubRouter)
 
+app.use('/github', githubRouter)
+
+app.get(
+  '/',
+  questionsController.getQuestions,
+  (req: Request, res: Response) => {
+    res.status(200).send(res.locals.questions);
+  }
+);
+app.post(
+  '/',
+  questionsController.createQuestion,
+  (req: Request, res: Response) => {
+    res.status(200).send(res.locals.question);
+  }
+);
+app.patch(
+  '/',
+  questionsController.updateQuestion,
+  (req: Request, res: Response) => {
+    res.status(200).send(res.locals.question);
+  }
+);
 //Define the error object type to use
 type ServerError = {
   log: string;
