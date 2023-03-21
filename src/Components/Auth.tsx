@@ -21,10 +21,11 @@ const Auth = ( props: any ) => {
 
   return(
   <div id='auth-container'>
-    
+    <h1>PIKAZA</h1>
+    <img src='/images/itus.webp' id='splash-logo'/>
       <button id='auth-button' onClick={handleGithubClick}>
         <img src='/images/github-icon.png' className='github-icon'/>
-        {'LOG IN WITH GITHUB'}
+        {'PROVE ITS YOU'}
       </button>
   
   </div>
