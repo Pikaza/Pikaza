@@ -30,7 +30,14 @@ app.get(
 );
 app.post(
   '/',
-  questionsController.createQuestions,
+  questionsController.createQuestion,
+  (req: Request, res: Response) => {
+    res.status(200).send(res.locals.question);
+  }
+);
+app.patch(
+  '/',
+  questionsController.updateQuestion,
   (req: Request, res: Response) => {
     res.status(200).send(res.locals.question);
   }
