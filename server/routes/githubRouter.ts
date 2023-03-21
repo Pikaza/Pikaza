@@ -5,29 +5,20 @@ import oAuthController from '../controllers/oAuthController.js';
 githubRouter.get(
   '/connect',
   oAuthController.login,
-  // oAuthController.requestGitHubIdentity,
   (req, res) => {
-    console.log('in githubrouter.get, post authcontrolr.login');
-    // return res.redirect(res.locals.url);
     res.status(200).json(res.locals.url)
   }
 );
 
-// github OAuth route
+
 githubRouter.get(
   '/callback',
   oAuthController.reqIdentity,
   oAuthController.queryWithAccessToken,
-  // accountController.createUser,
-  // authController.sign,
-  // cookieController.setSSIDCookie,
+  // create user in database? why?
   (req, res) => {
-    // console.log('after requestGitHUbIdentity & query w/ access token'),
-    //   console.log('res.locals.access_token', res.locals.access_token),
-    //   console.log('final redirect to homepage');
     console.log('Oauth successful')
-    res.redirect('http://localhost:5173/');
-    // res.status(200).json(res.locals.user)
+    res.redirect(`http://localhost:5173/${res.locals.user.username}`);
   }
 );
 
