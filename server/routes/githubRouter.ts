@@ -29,10 +29,11 @@ githubRouter.get(
   // authController.sign,
   // cookieController.setSSIDCookie,
   (req, res) => {
-    console.log('after requestGitHUbIdentity & query w/ access token'),
-      console.log('res.locals.access_token', res.locals.access_token),
-      console.log('final redirect to homepage');
-    res.redirect('/');
+    // console.log('after requestGitHUbIdentity & query w/ access token'),
+    //   console.log('res.locals.access_token', res.locals.access_token),
+    //   console.log('final redirect to homepage');
+    res.redirect('http://localhost:5173/');
+    // res.status(200).json(res.locals.user)
   }
 );
 

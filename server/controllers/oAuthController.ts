@@ -65,6 +65,7 @@ const oAuthController: oAuthController= {
 
   reqIdentity : async (req, res, next) => {
     const requestToken = req.query.code
+    console.log('inside reqIdentity', requestToken)
     try {
       const response = await fetch(`https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${requestToken}`, {
         method: 'POST',
@@ -77,6 +78,8 @@ const oAuthController: oAuthController= {
     });
       const data = await response.json();
       res.locals.access_token = data.access_token;
+      console.log('req token??', data)
+      return next();
   }
   catch (error){
     console.log(error, ': oath 67')
@@ -90,16 +93,20 @@ const oAuthController: oAuthController= {
 
   queryWithAccessToken : async (req, res, next) => {
     const { access_token } = res.locals
+    console.log('inside query with token')
     try{
       const response = await fetch ('https://api.github.com/user', {
         method: 'GET',
         headers: {'Authorization': `Bearer ${access_token}`}
       })
       const data = await response.json();
-      res.locals = {
-        ...res.locals,
-        ...processGitHubData(data)
-      }
+      const { login, id } = data
+      res.locals.user = { username: login, id: id}
+      // res.locals = {
+      //   ...res.locals,
+      //   ...processGitHubData(data)
+      // }
+      console.log('access token?', res.locals.user)
       return next()
     }
     catch (error) {
