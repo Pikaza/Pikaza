@@ -28,7 +28,7 @@ questionsController.getQuestions = async (
 };
 
 // controller for creating questions
-questionsController.createQuestions = async (
+questionsController.createQuestion = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -46,6 +46,69 @@ questionsController.createQuestions = async (
   }
 };
 
+// controller for creating questions
+questionsController.updateQuestion = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log('I am updating a question');
+  try {
+    const { question_body, company, role, tags } = req.body;
+    const questionRequest = req.body;
+    const questionInDB = await Questions.findOne({
+      where: { question_body: question_body },
+    });
+    
+    // checks if question in DB already has company
+    if (!questionInDB.company.includes(company[0])) {
+      const newCompanies = [...questionInDB.company, company[0]];
+      await Questions.update(
+        { company: newCompanies },
+        {
+          where: { question_body: question_body },
+        }
+      );
+    }
 
+    // checks if question in DB already has role
+    if (!questionInDB.role.includes(role[0])) {
+      const newRoles = [...questionInDB.role, role[0]];
+      await Questions.update(
+        { role: newRoles },
+        {
+          where: { question_body: question_body },
+        }
+      );
+    }
+
+    // checks if question in DB already has tags
+    for (const tag of tags) {
+      if (!questionInDB.tags.includes(tag)) {
+        const newTags = [...questionInDB.tags, tag];
+        await Questions.update(
+          { tags: newTags },
+          {
+            where: { question_body: question_body },
+          }
+        );
+      }
+    }
+    res.locals.question = await Questions.findOne({
+      where: { question_body: question_body },
+    });
+    const newFreq = questionInDB.frequency + 1;
+    await Questions.update(
+      { frequency: newFreq },
+      {
+        where: { question_body: question_body },
+      }
+    );
+    return next();
+  } catch (err) {
+    console.log('Error in updateQuestion middleware', err);
+    next({ err });
+  }
+};
 
 export default questionsController;
