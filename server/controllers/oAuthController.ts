@@ -102,13 +102,17 @@ const oAuthController: oAuthController= {
     try{
       const response = await fetch(`${orgsUrl}`, {
         headers: {'Authorization': `token ${access_token}`}
-
       })
       const data = await response.json()
-      console.log('dem orgs', data)
+      console.log('user oganizations', data)
+
+      if (!data.includes('codesmith') || !data.includes('Codesmith')){
+        res.locals.codesmith = false;
+      }
+      else res.locals.codesmith = true;
+    
     }
     catch(error){ 
-      console.log(error, ': oath 41')
       return next({
         log: 'Error occurred in query for orgs middleware',
         status: 400, 
