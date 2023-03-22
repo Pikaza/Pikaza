@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:server": "nodemon --watch './**/*.ts' --exec 'ts-node-esm' ./server/server.ts",
+    "banana": "nodemon --watch './**/*.ts' --exec 'ts-node-esm' ./server/db.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "jest"
