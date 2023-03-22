@@ -19,6 +19,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["server/**/*.ts"],
+  "include": ["server/**/*.ts", "./src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
