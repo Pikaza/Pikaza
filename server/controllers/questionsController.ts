@@ -17,7 +17,7 @@ questionsController.getQuestions = async (
 ) => {
   console.log('getting the questions');
   try {
-    const allQuestions = await Questions.findAll();
+    const allQuestions = await Questions.findAll({order:[['frequency','DESC']]});
     console.log('got the questions');
     res.locals.questions = allQuestions;
     return next();
@@ -35,8 +35,8 @@ questionsController.createQuestion = async (
 ) => {
   console.log('I am creating a new question');
   try {
-    const { question_body, company, role, tags } = req.body;
-    const questionData = { question_body, company, role, tags };
+    const { question_body, most_recent, company, role, tags } = req.body;
+    const questionData = { question_body, most_recent, company, role, tags };
     const newQuestion = await Questions.create(questionData);
     res.locals.question = newQuestion;
     return next();
@@ -54,7 +54,7 @@ questionsController.updateQuestion = async (
 ) => {
   console.log('I am updating a question');
   try {
-    const { question_body, company, role, tags } = req.body;
+    const { question_body, most_recent, company, role, tags } = req.body;
     const questionRequest = req.body;
     const questionInDB = await Questions.findOne({
       where: { question_body: question_body },
@@ -100,6 +100,12 @@ questionsController.updateQuestion = async (
     const newFreq = questionInDB.frequency + 1;
     await Questions.update(
       { frequency: newFreq },
+      {
+        where: { question_body: question_body },
+      }
+    );
+    await Questions.update(
+      { most_recent: most_recent },
       {
         where: { question_body: question_body },
       }
