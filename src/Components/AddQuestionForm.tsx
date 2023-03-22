@@ -5,6 +5,7 @@ import {
   TextField,
   Button,
   Autocomplete,
+  Stack,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -12,15 +13,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { RootState } from '../app/store';
 import { selectAllQuestions } from '../features/questions/questionsSlice';
+import { selectAllTags } from '../features/tags/tagsSlice';
 import { QuestionsAttributes } from 'server/db';
-
-const textStyle = { width: '400px', margin: '10px' };
+import {
+  questionAdded,
+  postQuestions,
+} from '../features/questions/questionsSlice';
+import { tagAdded } from '../features/tags/tagsSlice';
 
 export default function AddQuestionForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const questions = useAppSelector(selectAllQuestions);
+  const tags = useAppSelector(selectAllTags);
   // export interface QuestionsAttributes {
   //     _id: number;
+  // _most_recent:any
   //     question_body: string;
   //     frequency: number;
   //     company: string[];
@@ -30,36 +37,63 @@ export default function AddQuestionForm(): JSX.Element {
 
   const defaultProps = {
     options: questions,
-    getOptionLabel: (option: QuestionsAttributes) => option.question_body,
+    getOptionLabel: (option: any) => option.question_body,
   };
-  const flatProps = {
-    options: questions.map(option => option.question_body),
-  };
-  const [value, setValue] = useState<QuestionsAttributes | null>(null);
 
-  //on change on the form, it will update the state on this element, then with submit button will send to back
-  const [company, setCompany] = useState('');
-  const [role, setRole] = useState('Pick a role:'); //role
-  //questions input is like a textbox, so an array of strings
-  const [question, setQuestion] = useState('');
-  //make users provide a title of question?
-  const [tags, setTags] = useState([]);
-  const [notes, setNotes] = useState('');
+  const defaultPropsForTags = {
+    options: tags,
+    getOptionLabel: (option: string[]) => option,
+  };
+
+  //value of question input
+  const [value, setValue] = useState<string | null>(null);
+  const [company, setCompany] = useState<string[]>([]);
+  const [role, setRole] = useState<string[]>();
+  const [frequency, setFrequency] = useState(1);
+  const [enableNewQuestion, setEnableNewQuestion] = useState(false);
+  const [enableNewTag, setEnableNewTag] = useState(false);
+  const [questionTags, setQuestionTags] = useState<string | null | undefined>(
+    null
+  );
+  const [date, setDate] = useState<any>('');
 
   const onCompanyChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setCompany(e.target.value);
+    setCompany([e.target.value]);
   const onRoleChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setRole(e.target.value);
-  const onNotesChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setNotes(e.target.value); //do we even have notes
-  const onQuestionChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setQuestion(e.target.value);
+    setRole([e.target.value]);
+  const onDateChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setDate(e.target.value);
+  const onQuestionChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setValue(e.target.value);
+  // const onTagsChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+  //   setQuestionTags([e.target.value]);
 
-  //we need just the questionbank here...
+  const onSaveQuestionClicked = async () => {
+    //add more requirements
+    if (company && role && value && questionTags) {
+      console.log(company, role, value, questionTags);
+      const newQuestion = {
+        _id: 1,
+        most_recent: date,
+        company: company,
+        role: role,
+        question_body: value,
+        tags: questionTags,
+        frequency: frequency,
+      };
+      await Promise.all([
+        dispatch(questionAdded(newQuestion)),
+        postQuestions(newQuestion),
+      ]);
+    }
+  };
+  //textbox style
+  const textStyle = { width: '400px', margin: '10px' };
+
   return (
     <div className="add-question-form">
       <AppBar>
-        <Toolbar>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
           <h3>Add Question</h3>
           <Button
             color="inherit"
@@ -71,120 +105,121 @@ export default function AddQuestionForm(): JSX.Element {
           </Button>
         </Toolbar>
       </AppBar>
-
-      <Typography variant="h5">Add your questions</Typography>
+      <h4>Add your interview questions here:</h4>
       <form>
-        <TextField
-          style={textStyle}
-          type="text"
-          label="Company"
-          variant="outlined"
-          onChange={onCompanyChanged}
-        />
-        <br />
-        <TextField
-          style={textStyle}
-          type="text"
-          label="What's your role?"
-          variant="outlined"
-          onChange={onRoleChanged}
-        />
-        <br />
-        <Autocomplete
-          {...defaultProps}
-          id="controlled-demo"
-          value={value}
-          onChange={(event: any, newValue: QuestionsAttributes | null) => {
-            setValue(newValue);
-          }}
-          renderInput={params => (
+        <Stack
+          direction={{ xs: 'column', sm: 'column' }}
+          spacing={{ xs: 1, sm: 2, md: 4 }}
+        >
+          <div>
             <TextField
-              {...params}
-              label="Pick a Question..."
-              variant="standard"
+              id="post-date"
+              label="Date of Interview"
+              type="date"
+              defaultValue={date}
+              sx={{ width: 220 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={onDateChanged}
             />
+          </div>
+          <TextField
+            style={textStyle}
+            type="text"
+            label="Company"
+            variant="outlined"
+            onChange={onCompanyChanged}
+          />
+          <br />
+          <TextField
+            style={textStyle}
+            type="text"
+            label="What's your role?"
+            variant="outlined"
+            onChange={onRoleChanged}
+          />
+          <br />
+          <Autocomplete
+            id="controlled-demo"
+            value={value}
+            options={questions}
+            onChange={e => setValue(e.target.value)}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label="Pick a Question..."
+                variant="standard"
+              />
+            )}
+          />
+          <br />
+          <Button
+            onClick={() => {
+              setEnableNewQuestion(!enableNewQuestion);
+              setValue(null);
+            }}
+          >
+            New Question
+          </Button>
+          <br />
+          {enableNewQuestion ? (
+            <TextField
+              style={textStyle}
+              type="text"
+              label="New Question"
+              variant="outlined"
+              disabled={!enableNewQuestion}
+            />
+          ) : (
+            ''
           )}
-        />
-        <br />
-        <TextField
-          style={textStyle}
-          type="text"
-          label="Attribute"
-          variant="outlined"
-        />
-        <br />
-        <Button variant="contained" color="primary">
-          Save!
-        </Button>
+          <br />
+          <Autocomplete
+            {...defaultPropsForTags}
+            multiple
+            id="tags-standard"
+            options={tags} //need tags arr
+            getOptionLabel={option => option}
+            renderInput={params => (
+              <TextField
+                {...params}
+                variant="standard"
+                label="Multiple values"
+                placeholder="Recursion"
+              />
+            )}
+          />
+          <br />
+
+          <Button
+            onClick={() => {
+              setEnableNewTag(!enableNewTag);
+            }}
+          >
+            New Tag
+          </Button>
+          <br />
+          {enableNewTag ? (
+            <TextField
+              style={textStyle}
+              type="text"
+              label="New Tag"
+              variant="outlined"
+            />
+          ) : (
+            ''
+          )}
+          <br />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onSaveQuestionClicked}
+          >
+            Save!
+          </Button>
+        </Stack>
       </form>
     </div>
   );
 }
-
-// import { useState } from "react";
-// import { useDispatch } from "react-redux";
-// import { useAppDispatch } from "../../hooks";
-// import { nanoid } from "@reduxjs/toolkit";
-// import { postAdded } from "./postsSlice";
-// // import { selectAllUsers } from "../users/usersSlice";
-// // import { selectAllPosts } from "./postsSlice";
-
-// const AddInterviewPost = () => {
-//   const [company, setCompany] = useState("");
-//   const [role, setRole] = useState("Pick a role:"); //role
-//   //questions input is like a textbox, so an array of strings
-//   const [question, setQuestion] = useState("");
-//   //make users provide a title of question?
-//   const [tags, setTags] = useState([]);
-//   const [notes, setNotes] = useState("");
-
-//   const questionsArray = [];
-
-//   //set dispatch to the appDispatch hook
-//   const dispatch = useAppDispatch();
-
-//   const onCompanyChanged = (e: React.ChangeEvent<HTMLInputElement>) => setCompany(e.target.value);
-//   const onRoleChanged = (e: React.ChangeEvent<HTMLSelectElement>) => setRole(e.target.value);
-//   const onNotesChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setNotes(e.target.value);
-//   const onQuestionChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setQuestion(e.target.value);
-
-//   const onSavePostClicked = () => {
-//     //add more requirements
-//     if (company && role && question && tags) {
-//       dispatch(
-//         postAdded({
-//           id: nanoid(),
-//           company,
-//           role,
-//           question,
-//           tags,
-//         })
-//       );
-//     }
-//   };
-//   return (
-//     <section>
-//       <h2>Add an Interview Question</h2>
-//       <form>
-//         <label htmlFor="postCompany">Post Title:</label>
-//         <input type="text" id="postCompany" name="postCompany" value={company} onChange={onCompanyChanged} />
-//         <label htmlFor="postJobTitle">JobTitle:</label>
-//         <select id="postJobTitle" value={role} onChange={onRoleChanged}>
-//           <option value="Software Engineer">Your good 'ol Software Engineer</option>
-//           <option value="Junior">Junior Mints</option>
-//           <option value="Mid">Somewhere in the Middle</option>
-//           <option value="Senior">Senior Citizen</option>
-//           {role}
-//         </select>
-//         <label htmlFor="postQuestion">Any additional notes:</label>
-//         <textarea id="postQuestion" name="postQuestion" value={question} onChange={onQuestionChanged} />
-//         <label htmlFor="postNotes">Any additional notes:</label>
-//         <textarea id="postNotes" name="postNotes" value={notes} onChange={onNotesChanged} />
-//         {/* <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
-//           Save Interview Info
-//         </button> */}
-//       </form>
-//     </section>
-//   );
-// };
-// export default AddInterviewPost;
