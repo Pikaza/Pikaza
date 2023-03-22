@@ -42,32 +42,32 @@ export default function QuestionsTable() {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="questions table">
+      <Table sx={{ minWidth: 650 }} aria-label='questions table'>
         <TableHead>
           <TableRow>
             <TableCell>Frequency</TableCell>
-            <TableCell align="right">Question</TableCell>
-            <TableCell align="right">Companies</TableCell>
-            <TableCell align="right">Days Since Interview</TableCell>
-            <TableCell align="right">Have You Been Asked</TableCell>
-            <TableCell align="right">Type of Job</TableCell>
-            <TableCell align="right">Tags</TableCell>
+            <TableCell align='right'>Question</TableCell>
+            <TableCell align='right'>Companies</TableCell>
+            <TableCell align='right'>Days Since Interview</TableCell>
+            <TableCell align='right'>Have You Been Asked</TableCell>
+            <TableCell align='right'>Type of Job</TableCell>
+            <TableCell align='right'>Tags</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedQuestions.map(row => (
+          {sortedQuestions.map((row) => (
             <TableRow
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell component='th' scope='row'>
                 {row.frequency}
               </TableCell>
-              <TableCell align="right">{row.company}</TableCell>
-              <TableCell align="right">{'days since'}</TableCell>
-              <TableCell align="right">{'have you'}</TableCell>
-              <TableCell align="right">{row.role}</TableCell>
-              <TableCell align="right">{row.tags}</TableCell>
+              <TableCell align='right'>{row.company}</TableCell>
+              <TableCell align='right'>{'days since'}</TableCell>
+              <TableCell align='right'>{'have you'}</TableCell>
+              <TableCell align='right'>{row.role}</TableCell>
+              <TableCell align='right'>{row.tags}</TableCell>
             </TableRow>
           ))}
         </TableBody>
