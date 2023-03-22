@@ -8,8 +8,10 @@ import "./index.css";
 function App() {
   return (
     <Routes>
-      {/* <Route path="/" element={<Auth />} /> */}
+      <Route path="/" element={<Auth />} />
       <Route path="/home" element={<HomeContainer />} />
+      {/* <Route path="/home/:username" element={<HomeContainer />} />  */}
+
     </Routes>
   );
 }
