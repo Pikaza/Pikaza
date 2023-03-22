@@ -3,7 +3,8 @@
  * @module  db
  * @description Database file that will connect to the localhost postgreSQL
  * ************************************
-//  */
+ *   */
+
 import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -11,7 +12,10 @@ dotenv.config();
 // import Questions from './models/questions.model.js';
 
 const PG_URI: any = process.env.PG_URI;
-const sequelize = new Sequelize(PG_URI, { logging: false });
+const sequelize = new Sequelize(
+  'postgres://ksfjiqbz:Gg4_sm2S12I1MS0FCB3QW-ESIPFAQzoB@ruby.db.elephantsql.com/ksfjiqbz',
+  { logging: false }
+);
 
 const db: any = {
   sequelize,
@@ -91,7 +95,7 @@ sequelize
   .then(() => {
     console.log('Connection has been established successfully.');
   })
-  .catch((err) => {
+  .catch(err => {
     console.log('error from db.js: ', err);
     console.log('i did not connect');
   });
