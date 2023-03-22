@@ -103,4 +103,5 @@ sequelize
   .then(() => {
     console.log('All models were synchronized successfully.');
   });
+
 export { db };

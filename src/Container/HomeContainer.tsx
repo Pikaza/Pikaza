@@ -9,10 +9,12 @@ import QuestionsTable from "../Components/QuestionsTable";
 // import Row from "@mui/material/Row";
 import ButtonAppBar from "../Components/NavBar";
 import AddQuestionForm from "../Components/AddQuestionForm";
+import { useParams } from 'react-router-dom';
 
 const HomeContainer = () => {
   const dispatch = useAppDispatch();
   const questions = useAppSelector(selectAllQuestions);
+  const { username } = useParams()
 
   // export interface QuestionsAttributes {
   //     _id: number;
@@ -47,7 +49,7 @@ const HomeContainer = () => {
       <ButtonAppBar />
       {/* <AddQuestionForm /> */}
       <Container>
-        <h1>HELLO, RANDO USER</h1>
+        <h1>HELLO, {username}</h1>
         <QuestionsTable />
       </Container>
     </>
