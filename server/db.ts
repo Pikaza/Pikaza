@@ -10,10 +10,8 @@ dotenv.config();
 // import { test } from './test.js';
 // import Questions from './models/questions.model.js';
 
-const banana = 'postgres://ksfjiqbz:Gg4_sm2S12I1MS0FCB3QW-ESIPFAQzoB@ruby.db.elephantsql.com/ksfjiqbz'
-
-
-const sequelize = new Sequelize(banana, { logging: false });
+const PG_URI: any = process.env.PG_URI;
+const sequelize = new Sequelize(PG_URI, { logging: false });
 
 const db: any = {
   sequelize,
