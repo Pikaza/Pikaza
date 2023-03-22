@@ -1,12 +1,20 @@
-import { Typography, AppBar, Toolbar, TextField, Button, Autocomplete } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { RootState } from "../app/store";
-import { selectAllQuestions } from "../features/questions/questionsSlice";
+import {
+  Typography,
+  AppBar,
+  Toolbar,
+  TextField,
+  Button,
+  Autocomplete,
+} from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { RootState } from '../app/store';
+import { selectAllQuestions } from '../features/questions/questionsSlice';
+import { QuestionsAttributes } from 'server/db';
 
-const textStyle = { width: "400px", margin: "10px" };
+const textStyle = { width: '400px', margin: '10px' };
 
 export default function AddQuestionForm(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -19,24 +27,33 @@ export default function AddQuestionForm(): JSX.Element {
   //     role: string[];
   //     tags: string[];
   //   }
-  // const defaultProps = {
-  //   options: top100Films,
-  //   // getOptionLabel: (option: FilmOptionType) => option.title,
-  // };
+
+  const defaultProps = {
+    options: questions,
+    getOptionLabel: (option: QuestionsAttributes) => option.question_body,
+  };
+  const flatProps = {
+    options: questions.map(option => option.question_body),
+  };
+  const [value, setValue] = useState<QuestionsAttributes | null>(null);
 
   //on change on the form, it will update the state on this element, then with submit button will send to back
-  const [company, setCompany] = useState("");
-  const [role, setRole] = useState("Pick a role:"); //role
+  const [company, setCompany] = useState('');
+  const [role, setRole] = useState('Pick a role:'); //role
   //questions input is like a textbox, so an array of strings
-  const [question, setQuestion] = useState("");
+  const [question, setQuestion] = useState('');
   //make users provide a title of question?
   const [tags, setTags] = useState([]);
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState('');
 
-  const onCompanyChanged = (e: React.ChangeEvent<HTMLInputElement>) => setCompany(e.target.value);
-  const onRoleChanged = (e: React.ChangeEvent<HTMLSelectElement>) => setRole(e.target.value);
-  const onNotesChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setNotes(e.target.value); //do we even have notes
-  const onQuestionChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setQuestion(e.target.value);
+  const onCompanyChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setCompany(e.target.value);
+  const onRoleChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setRole(e.target.value);
+  const onNotesChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setNotes(e.target.value); //do we even have notes
+  const onQuestionChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setQuestion(e.target.value);
 
   //we need just the questionbank here...
   return (
@@ -44,7 +61,12 @@ export default function AddQuestionForm(): JSX.Element {
       <AppBar>
         <Toolbar>
           <h3>Add Question</h3>
-          <Button color="inherit" component={Link} to="/home" variant="outlined">
+          <Button
+            color="inherit"
+            component={Link}
+            to="/home"
+            variant="outlined"
+          >
             HOME
           </Button>
         </Toolbar>
@@ -52,26 +74,47 @@ export default function AddQuestionForm(): JSX.Element {
 
       <Typography variant="h5">Add your questions</Typography>
       <form>
-        <TextField style={textStyle} type="text" label="Company" variant="outlined" />
+        <TextField
+          style={textStyle}
+          type="text"
+          label="Company"
+          variant="outlined"
+          onChange={onCompanyChanged}
+        />
         <br />
-        <TextField style={textStyle} type="text" label="goal description" variant="outlined" />
+        <TextField
+          style={textStyle}
+          type="text"
+          label="What's your role?"
+          variant="outlined"
+          onChange={onRoleChanged}
+        />
         <br />
-        {/* <Autocomplete
+        <Autocomplete
           {...defaultProps}
           id="controlled-demo"
           value={value}
-          onChange={(event: any, newValue: FilmOptionType | null) => {
+          onChange={(event: any, newValue: QuestionsAttributes | null) => {
             setValue(newValue);
           }}
-          renderInput={(params) => <TextField {...params} label="controlled" variant="standard" />}
-        /> */}
+          renderInput={params => (
+            <TextField
+              {...params}
+              label="Pick a Question..."
+              variant="standard"
+            />
+          )}
+        />
         <br />
-        <TextField style={textStyle} type="text" label="Attribute" variant="outlined" />
-        <br />
-        <TextField style={textStyle} type="text" label="goal stage" variant="outlined" />
+        <TextField
+          style={textStyle}
+          type="text"
+          label="Attribute"
+          variant="outlined"
+        />
         <br />
         <Button variant="contained" color="primary">
-          save
+          Save!
         </Button>
       </form>
     </div>
