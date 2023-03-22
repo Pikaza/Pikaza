@@ -25,7 +25,7 @@ import { selectAllQuestions } from "../features/questions/questionsSlice";
 
 export default function QuestionsTable() {
   const dispatch = useAppDispatch();
-  const questions = useAppSelector(selectAllQuestions);
+  const questions = useAppSelector(selectAllQuestions).sort((a, b) => a.frequency - b.frequency);
 
   console.log("hello from the questions table: ");
   console.dir(questions);

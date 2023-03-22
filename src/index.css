@@ -37,6 +37,15 @@ h1 {
 .pikaza-navbar {
   font-family: "Press Start 2P";
 }
+
+.add-question-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em 2em;
+  margin-top: 5em;
+}
+
 .github-icon {
   height: 2rem;
   margin-right: 0.5rem;
