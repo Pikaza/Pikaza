@@ -2,14 +2,9 @@ import express, { Router } from 'express';
 const githubRouter: Router = express.Router();
 import oAuthController from '../controllers/oAuthController.js';
 
-githubRouter.get(
-  '/connect',
-  oAuthController.login,
-  (req, res) => {
-    res.status(200).json(res.locals.url)
-  }
-);
-
+githubRouter.get('/connect', oAuthController.login, (req, res) => {
+  res.status(200).json(res.locals.url);
+});
 
 githubRouter.get(
   '/callback',
@@ -18,27 +13,16 @@ githubRouter.get(
   oAuthController.queryForOrgs,
   // create user in database? why?
   (req, res) => {
-    const membership = res.locals.codesmith
-    if (membership){
-          console.log('Oauth successful')
+    // const membership = res.locals.codesmith;
+    // if (membership){
+    // console.log('Oauth successful')
     res.redirect(`http://localhost:5173/home/${res.locals.user.username}`);
-    }
-    else{
-      res.status(200).json('Members Only, sorry.')
-    }
+    // }
+    // else{
+    // res.status(200).json('Members Only, sorry.')
+    // }
   }
 );
-
-
-
-
-
-
-
-
-
-
-
 
 // router.get('/connect', (req, res) => {
 //   console.log('in router get connect');
@@ -50,7 +34,7 @@ githubRouter.get(
 // });
 
 // router.post(
-//   '/callback', 
+//   '/callback',
 //   githubController.callback,
 //   (req, res) => {
 //     console.log('access token in router.get', res.locals.access_token)
@@ -59,11 +43,11 @@ githubRouter.get(
 // );
 
 // router.get(
-//   '/success', 
+//   '/success',
 //   githubController.auth2,
 //   (req, res) => {
 //     res.status(200).json(res.locals.userData);
 //   }
 // );
 
-export default githubRouter
+export default githubRouter;

@@ -35,6 +35,10 @@ h1 {
   font-family: 'Press Start 2P';
 }
 
+#navbar-pika {
+  width: 1em;
+  height: 1em;
+}
 /* why this not work */
 .pikaza-navbar {
   font-family: 'Press Start 2P';

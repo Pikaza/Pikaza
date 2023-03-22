@@ -6,6 +6,7 @@ import AddQuestionForm from './Components/AddQuestionForm';
 import { Routes, Route } from 'react-router-dom';
 import './index.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Auth from './Components/Auth';
 
 const theme = createTheme({
   palette: {
@@ -29,8 +30,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        {/* <Route path="/" element={<Auth />} /> */}
-        <Route path="/home" element={<HomeContainer />} />
+        <Route path="/" element={<Auth />} />
+        <Route path="/home/:username" element={<HomeContainer />} />
         <Route path="/addQuestion" element={<AddQuestionForm />} />
       </Routes>
     </ThemeProvider>

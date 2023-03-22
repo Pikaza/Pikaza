@@ -78,7 +78,7 @@ export default function AddQuestionForm(): JSX.Element {
         company: company,
         role: role,
         question_body: value,
-        tags: questionTags,
+        tags: [questionTags], //* This was a hack to get TS to shut up on line 86
         frequency: frequency,
       };
       await Promise.all([
@@ -98,7 +98,7 @@ export default function AddQuestionForm(): JSX.Element {
           <Button
             color="inherit"
             component={Link}
-            to="/home"
+            to="/home" // TODO: Fix this to have the user's name (this is a hack for the demo)
             variant="outlined"
           >
             HOME
@@ -141,10 +141,12 @@ export default function AddQuestionForm(): JSX.Element {
           />
           <br />
           <Autocomplete
-            id="controlled-demo"
+            {...defaultProps}
+            id="question"
             value={value}
-            options={questions}
-            onChange={e => setValue(e.target.value)}
+            options={questions.map(question => question.question_body)}
+            getOptionLabel={option => option}
+            onChange={(e, stuff) => setValue(stuff)}
             renderInput={params => (
               <TextField
                 {...params}

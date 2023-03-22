@@ -14,8 +14,10 @@ import QuestionsTable from '../Components/QuestionsTable';
 import ButtonAppBar from '../Components/NavBar';
 import AddQuestionForm from '../Components/AddQuestionForm';
 import { tagAdded } from '../features/tags/tagsSlice';
+import { useParams } from 'react-router-dom';
 
 const HomeContainer = () => {
+  const { username } = useParams();
   const dispatch = useAppDispatch();
   const questions = useAppSelector(selectAllQuestions);
 
@@ -32,7 +34,7 @@ const HomeContainer = () => {
       <ButtonAppBar />
       {/* <AddQuestionForm /> */}
       <Container>
-        <h1>HELLO, RANDO USER</h1>
+        <h1>HELLO, {username}</h1>
         <QuestionsTable />
       </Container>
     </>
