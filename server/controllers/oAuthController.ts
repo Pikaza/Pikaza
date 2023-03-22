@@ -98,7 +98,6 @@ const oAuthController: oAuthController= {
   },
   queryForOrgs : async (req, res, next) => {
     const { orgsUrl, access_token } = res.locals
-    // const dummyURL = 'https://api.github.com/users/Chanduh/forks'
     try{
       const response = await fetch(`${orgsUrl}`, {
         headers: {'Authorization': `token ${access_token}`}
