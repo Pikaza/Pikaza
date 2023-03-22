@@ -1,10 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 /* * {
   border: 1px solid red;
 } */
-
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -18,7 +16,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-}
+} */
 
 a {
   font-weight: 500;
@@ -28,36 +26,27 @@ a {
 a:hover {
   color: #535bf2;
 }
-h1 {
-  font-family: 'Press Start 2P';
-}
-
-body {
-  color: black;
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  font-family: "Press Start 2P";
 }
 
+/* why this not work */
+.pikaza-navbar {
+  font-family: "Press Start 2P";
+}
 .github-icon {
   height: 2rem;
-  margin-right: 1rem;
-  margin-left: -.5rem;
+  margin-right: 0.5rem;
 }
-
-#auth-button{
+#auth-button {
   display: flex;
   justify-content: center;
   align-items: center;
   border: 5px solid black;
-  padding: .5rem 1rem .5rem 1rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   margin-top: 1rem;
 }
 
@@ -69,8 +58,7 @@ h1 {
   width: 100vw;
   height: 100vh;
 }
-
-#splash-logo{
+#splash-logo {
   width: 250px;
   margin-top: -30px;
 }
