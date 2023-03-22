@@ -6,17 +6,16 @@ let clientId = process.env.CLIENT_ID
 const clientSecret = process.env.CLIENT_SECRET
 const redirectUri = process.env.GITHUB_REDIRECT_URI;
 
-
 interface GitHubData {
   login: string;
   id: number;
 }
 
-
 interface oAuthController {
   login: (req: Request, res: Response, next: NextFunction) => Promise<void>;
   reqIdentity: (req: Request, res: Response, next: NextFunction) => Promise<void>;
   queryWithAccessToken: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+  queryForOrgs: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 }
 
 const oAuthController: oAuthController= {
@@ -34,16 +33,14 @@ const oAuthController: oAuthController= {
       let redirectURL = new URL(redirectStr);
       res.locals.url = redirectURL;
       // console.log('res.locals', res.locals.url);
-      console.log('redirectStr', redirectStr);
-
+      // console.log('redirectStr', redirectStr);
       return next();
     } 
     catch(error){ 
-      console.log(error, ': oath 41')
       return next({
-        log: 'Error occurred in the oauthController.oAuthLogin middleware',
-        status: 400, // bad request
-        err: {err: 'Error occurred in sending user to login to GitHub to login'}
+        log: 'Error occurred redirecting user to github',
+        status: 400, 
+        err: {err: 'Error occurred redirecting to Github'}
       });
     }
   },
@@ -63,16 +60,15 @@ const oAuthController: oAuthController= {
     });
       const data = await response.json();
       res.locals.access_token = data.access_token;
-      console.log('req token??', data)
+      console.log('req token: ', data)
       return next();
   }
-  catch (error){
-    console.log(error, ': oath 67')
-    // return next({
-    //   log: `Error occurred in the oauthController.requestGitHubIdentity middleware\n Error: ${error.message}`,
-    //   status: 400, // bad request
-    //   err: { err: 'Error occurred in getting your Github user identity' }
-    // });
+  catch(error){ 
+    return next({
+      log: 'Error occurred authenticating via github',
+      status: 400, 
+      err: {err: 'Error occurred authenticating user'}
+    });
   }
 },
 
@@ -85,19 +81,45 @@ const oAuthController: oAuthController= {
         headers: {'Authorization': `Bearer ${access_token}`}
       })
       const data = await response.json();
-      const { login, id } = data
+      const { login, id, organizations_url } = data
       res.locals.user = { username: login, id: id}
-      console.log('access token?', res.locals.user)
+      console.log('user', res.locals.user)
+      console.log('organizations url', organizations_url)
+      res.locals.orgsUrl = organizations_url
       return next()
     }
-    catch (error) {
-      console.log(error, ': oath 90')
-      // return next({
-      //   log: `Error occurred in the oauthController.queryGitHubAPIWithAccessToken middleware\n Error: ${error.message}`,
-      //   status: 400, // bad request
-      //   err: { err: 'Error occurred in querying Github API with access token' }
-      // });
+    catch(error){ 
+      return next({
+        log: 'Error occurred query w acces token middleware',
+        status: 400,
+        err: {err: 'Error occurred using access token'}
+      });
     }
+  },
+  queryForOrgs : async (req, res, next) => {
+    const { orgsUrl, access_token } = res.locals
+    // const dummyURL = 'https://api.github.com/users/Chanduh/forks'
+    try{
+      const response = await fetch(`${orgsUrl}`, {
+        headers: {'Authorization': `token ${access_token}`}
+      })
+      const data = await response.json()
+      console.log('user oganizations', data)
+
+      if (!data.includes('codesmith') || !data.includes('Codesmith')){
+        res.locals.codesmith = false;
+      }
+      else res.locals.codesmith = true;
+    
+    }
+    catch(error){ 
+      return next({
+        log: 'Error occurred in query for orgs middleware',
+        status: 400, 
+        err: {err: 'Error occurred authenticating organization'}
+      });
+    }
+    return next();
   }
 
 }

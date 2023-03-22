@@ -15,10 +15,17 @@ githubRouter.get(
   '/callback',
   oAuthController.reqIdentity,
   oAuthController.queryWithAccessToken,
+  oAuthController.queryForOrgs,
   // create user in database? why?
   (req, res) => {
-    console.log('Oauth successful')
-    res.redirect(`http://localhost:5173/${res.locals.user.username}`);
+    const membership = res.locals.codesmith
+    if (membership){
+          console.log('Oauth successful')
+    res.redirect(`http://localhost:5173/home/${res.locals.user.username}`);
+    }
+    else{
+      res.status(200).json('Members Only, sorry.')
+    }
   }
 );
 
