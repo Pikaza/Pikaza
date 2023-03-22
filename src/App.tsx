@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Auth from "./Components/Auth";
 import HomeContainer from "./Container/HomeContainer";
+import AddQuestionForm from "./Components/AddQuestionForm";
 import { Routes, Route } from "react-router-dom";
 import "./index.css";
 
@@ -10,6 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Auth />} />
       <Route path="/home" element={<HomeContainer />} />
+      <Route path="/addQuestion" element={<AddQuestionForm />} />
       {/* <Route path="/home/:username" element={<HomeContainer />} />  */}
 
     </Routes>

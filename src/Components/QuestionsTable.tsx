@@ -1,15 +1,15 @@
-import * as React from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 
 // Material UI
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { selectAllQuestions } from "../features/questions/questionsSlice";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { selectAllQuestions } from '../features/questions/questionsSlice';
 
 // function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
 //   return { name, calories, fat, carbs, protein };
@@ -26,35 +26,48 @@ import { selectAllQuestions } from "../features/questions/questionsSlice";
 export default function QuestionsTable() {
   const dispatch = useAppDispatch();
   const questions = useAppSelector(selectAllQuestions);
+  const sortedQuestions = questions;
+  console.log(questions);
 
-  console.log("hello from the questions table: ");
+  // useEffect(() => {
+  //   sortedQuestions.sort((a, b) => a.frequency - b.frequency);
+
+  //   // return () => {
+  //   //   second;
+  //   // };
+  // }, [questions]);
+
+  console.log('hello from the questions table: ');
   console.dir(questions);
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} aria-label='questions table'>
         <TableHead>
           <TableRow>
             <TableCell>Frequency</TableCell>
-            <TableCell align="right">Question</TableCell>
-            <TableCell align="right">Companies</TableCell>
-            <TableCell align="right">Days Since Interview</TableCell>
-            <TableCell align="right">Have You Been Asked</TableCell>
-            <TableCell align="right">Type of Job</TableCell>
-            <TableCell align="right">Tags</TableCell>
+            <TableCell align='right'>Question</TableCell>
+            <TableCell align='right'>Companies</TableCell>
+            <TableCell align='right'>Days Since Interview</TableCell>
+            <TableCell align='right'>Have You Been Asked</TableCell>
+            <TableCell align='right'>Type of Job</TableCell>
+            <TableCell align='right'>Tags</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {questions.map((row) => (
-            <TableRow key={row._id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-              <TableCell component="th" scope="row">
+          {sortedQuestions.map((row) => (
+            <TableRow
+              key={row._id}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component='th' scope='row'>
                 {row.frequency}
               </TableCell>
-              <TableCell align="right">{row.company}</TableCell>
-              <TableCell align="right">{"days since"}</TableCell>
-              <TableCell align="right">{"have you"}</TableCell>
-              <TableCell align="right">{row.role}</TableCell>
-              <TableCell align="right">{row.tags}</TableCell>
+              <TableCell align='right'>{row.company}</TableCell>
+              <TableCell align='right'>{'days since'}</TableCell>
+              <TableCell align='right'>{'have you'}</TableCell>
+              <TableCell align='right'>{row.role}</TableCell>
+              <TableCell align='right'>{row.tags}</TableCell>
             </TableRow>
           ))}
         </TableBody>

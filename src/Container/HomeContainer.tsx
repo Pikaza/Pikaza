@@ -8,7 +8,7 @@ import { fetchQuestions, postQuestions, selectAllQuestions } from "../features/q
 import QuestionsTable from "../Components/QuestionsTable";
 // import Row from "@mui/material/Row";
 import ButtonAppBar from "../Components/NavBar";
-import QuestionForm from "../Components/QuestionForm";
+import AddQuestionForm from "../Components/AddQuestionForm";
 
 const HomeContainer = () => {
   const dispatch = useAppDispatch();
@@ -45,7 +45,7 @@ const HomeContainer = () => {
   return (
     <>
       <ButtonAppBar />
-      <QuestionForm />
+      {/* <AddQuestionForm /> */}
       <Container>
         <h1>HELLO, RANDO USER</h1>
         <QuestionsTable />

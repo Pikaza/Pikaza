@@ -24,6 +24,9 @@ export default function ButtonAppBar() {
           <Typography className="pikaza-navbar" variant="h5" component="div" sx={{ flexGrow: 1 }}>
             PIKAZA
           </Typography>
+          <Button color="inherit" component={Link} to="/addQuestion" variant="outlined">
+            ADD QUESTION
+          </Button>
           <Button color="inherit" component={Link} to="/home" variant="outlined">
             HOME
           </Button>
