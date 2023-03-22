@@ -21,6 +21,18 @@ export const fetchQuestions = createAsyncThunk("fetchQuestions", async () => {
   return response.data;
 });
 
+//post - not connected
+export const postQuestions = createAsyncThunk("postQuestions", async (question: QuestionsAttributes) => {
+  console.log("async thunker post");
+  try {
+    const response = await axios.post("http://localhost:8080/", question);
+    console.log("response from fetchQuestions asyncthunk", response.data);
+    return response.data;
+  } catch (error) {
+    console.log("Error posting question in postQuestions THUNK");
+  }
+});
+
 const questionsSlice = createSlice({
   name: "questions",
   initialState,
@@ -31,6 +43,9 @@ const questionsSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(fetchQuestions.fulfilled, (state, action) => {
+      return action.payload;
+    });
+    builder.addCase(postQuestions.fulfilled, (state, action) => {
       return action.payload;
     });
   },

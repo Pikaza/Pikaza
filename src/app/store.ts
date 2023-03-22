@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import questionsReducer from "../features/questions/questionsSlice";
+// import { postQuestions } from "../features/questions/questionsSlice";
 // import postsReducer from "./features/posts/postsSlice";
 
 export const store = configureStore({
   reducer: {
     questions: questionsReducer,
+
     // questionSlice: questionReducer,
   },
 });
