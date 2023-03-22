@@ -17,9 +17,9 @@ import { tagAdded } from '../features/tags/tagsSlice';
 import { useParams } from 'react-router-dom';
 
 const HomeContainer = () => {
-  const { username } = useParams();
   const dispatch = useAppDispatch();
   const questions = useAppSelector(selectAllQuestions);
+  const { username } = useParams();
 
   useEffect(() => {
     questions.forEach(question => {

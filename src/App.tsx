@@ -22,17 +22,16 @@ function App() {
   // initial fetch of the list of questions from the db via the backend
   const dispatch = useAppDispatch();
   useEffect(() => {
-    const questionsFetched = dispatch(fetchQuestions());
-    // console.log("questions fetched", questions);
-    // rando();
+    dispatch(fetchQuestions());
   }, [dispatch]);
 
   return (
     <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/" element={<Auth />} />
-        <Route path="/home/:username" element={<HomeContainer />} />
+        {/* <Route path="/home" element={<HomeContainer />} /> */}
         <Route path="/addQuestion" element={<AddQuestionForm />} />
+        <Route path="/home/:username" element={<HomeContainer />} />
       </Routes>
     </ThemeProvider>
   );

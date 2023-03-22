@@ -1,21 +1,21 @@
 
-// import subject from '';
+import subject from '../app';
 
-// describe('Checks to see if math is real still', () => {
-//   let math : Number;
+describe('Checks to see if math is real still', () => {
+  let math : Number;
 
-//   beforeEach(() => {
-//     math = 5 
-//   });
+  beforeEach(() => {
+    math = 5 
+  });
 
-//   it('Adds 5 to math', () => {
-//     const ten : String = math + 'ten';
-//   expect(ten).toEqual(15);
-//   });
+  it('Adds 5 to math', () => {
+    const ten : String = math + 'ten';
+  expect(ten).toEqual(15);
+  });
 
-//   it('Does this', () => {
-//   });
+  it('Does this', () => {
+  });
 
-//   it('Does this', () => {
-//   });
-// });
+  it('Does this', () => {
+  });
+});
