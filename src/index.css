@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 /* * {
   border: 1px solid red;
 } */
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -46,8 +48,10 @@ h1 {
 
 .github-icon {
   height: 2rem;
-  margin-right: .5rem;
+  margin-right: 1rem;
+  margin-left: -.5rem;
 }
+
 #auth-button{
   display: flex;
   justify-content: center;
@@ -55,8 +59,8 @@ h1 {
   border: 5px solid black;
   padding: .5rem 1rem .5rem 1rem;
   margin-top: 1rem;
-
 }
+
 #auth-container {
   display: flex;
   justify-content: center;
@@ -65,6 +69,7 @@ h1 {
   width: 100vw;
   height: 100vh;
 }
+
 #splash-logo{
   width: 250px;
   margin-top: -30px;
