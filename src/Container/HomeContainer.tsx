@@ -18,22 +18,13 @@ import { useParams } from 'react-router-dom';
 import { userLoggedIn } from '../features/users/usersSlice';
 
 const HomeContainer = () => {
-  const dispatch = useAppDispatch();
-  const questions = useAppSelector(selectAllQuestions);
-
   // grab the username off the Params and set it in the redux store
+  const dispatch = useAppDispatch();
+
   const { username } = useParams();
   useEffect(() => {
     dispatch(userLoggedIn(username));
   }, [username]);
-
-  useEffect(() => {
-    questions.forEach(question => {
-      question.tags.forEach(tag => {
-        dispatch(tagAdded(tag));
-      });
-    });
-  }, [questions]);
 
   return (
     <>
