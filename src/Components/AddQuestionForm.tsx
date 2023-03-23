@@ -20,11 +20,13 @@ import {
   postQuestions,
 } from '../features/questions/questionsSlice';
 import { tagAdded } from '../features/tags/tagsSlice';
+import { selectUserName } from '../features/users/usersSlice';
 
 export default function AddQuestionForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const questions = useAppSelector(selectAllQuestions);
   const tags = useAppSelector(selectAllTags);
+  const username = useAppSelector(selectUserName);
   // export interface QuestionsAttributes {
   //     _id: number;
   // _most_recent:any
@@ -98,7 +100,7 @@ export default function AddQuestionForm(): JSX.Element {
           <Button
             color="inherit"
             component={Link}
-            to="/home" // TODO: Fix this to have the user's name (this is a hack for the demo)
+            to={`/home/${username}`}
             variant="outlined"
           >
             HOME
