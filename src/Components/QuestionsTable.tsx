@@ -14,6 +14,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import { selectAllCompanies } from '../features/companies/companiesSlice';
+import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 // import _ from 'lodash'; //
 // replacement for lodash import
@@ -23,8 +25,10 @@ const intersection = (arr: any, ...args: any) =>
 export default function QuestionsTable() {
   const questions = useAppSelector(selectAllQuestions);
   const tags = useAppSelector(selectAllTags);
+  const companies = useAppSelector(selectAllCompanies);
   const [renderedQuestions, setRenderedQuestions] = useState(questions);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
 
   useEffect(() => {
     console.log('loaded questions into rendered questions');
@@ -37,10 +41,12 @@ export default function QuestionsTable() {
       questions.filter(
         question =>
           intersection(question.tags, selectedTags).length ===
-          selectedTags.length
+            selectedTags.length &&
+          intersection(question.company, selectedCompanies).length ===
+            selectedCompanies.length
       )
     );
-  }, [selectedTags]);
+  }, [selectedTags, selectedCompanies]);
 
   // if no tags are selected, return true for all of them.
 
@@ -49,18 +55,32 @@ export default function QuestionsTable() {
 
   return (
     <>
-      <Autocomplete
-        multiple
-        disablePortal
-        value={selectedTags}
-        onChange={(e, newlySelectedTags) => {
-          setSelectedTags(newlySelectedTags);
-        }}
-        id="filter-by-tags"
-        options={tags}
-        sx={{ width: 300 }}
-        renderInput={params => <TextField {...params} label="Tags" />}
-      />
+      <Grid container columnSpacing={2} margin={2}>
+        <Autocomplete
+          multiple
+          disablePortal
+          value={selectedCompanies}
+          onChange={(e, newlySelectedCompanies) => {
+            setSelectedCompanies(newlySelectedCompanies);
+          }}
+          id="filter-by-company"
+          options={companies}
+          sx={{ width: 300 }}
+          renderInput={params => <TextField {...params} label="Companies" />}
+        />
+        <Autocomplete
+          multiple
+          disablePortal
+          value={selectedTags}
+          onChange={(e, newlySelectedTags) => {
+            setSelectedTags(newlySelectedTags);
+          }}
+          id="filter-by-tags"
+          options={tags}
+          sx={{ width: 300 }}
+          renderInput={params => <TextField {...params} label="Tags" />}
+        />
+      </Grid>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="questions table">
           <TableHead>
