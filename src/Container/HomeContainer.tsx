@@ -15,11 +15,17 @@ import ButtonAppBar from '../Components/NavBar';
 import AddQuestionForm from '../Components/AddQuestionForm';
 import { tagAdded } from '../features/tags/tagsSlice';
 import { useParams } from 'react-router-dom';
+import { userLoggedIn } from '../features/users/usersSlice';
 
 const HomeContainer = () => {
   const dispatch = useAppDispatch();
   const questions = useAppSelector(selectAllQuestions);
+
+  // grab the username off the Params and set it in the redux store
   const { username } = useParams();
+  useEffect(() => {
+    dispatch(userLoggedIn(username));
+  }, [username]);
 
   useEffect(() => {
     questions.forEach(question => {
